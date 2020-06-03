@@ -118,12 +118,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharpCifs.STD1.3\SharpCifs.STD1.3.csproj">
-      <Project>{19d5580a-27c8-42d0-b5f1-4ecfabb816e7}</Project>
-      <Name>SharpCifs.STD1.3</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
     <Content Include="secrets.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

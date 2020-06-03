@@ -13,10 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SharpCifs.STD1.3\SharpCifs.STD1.3.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Xb.Core.Json" Version="1.0.4" />
   </ItemGroup>
 

@@ -219,7 +219,7 @@ namespace SharpCifs.Netbios
                 */
                 try
                 {
-                    localHostname = Dns.GetHostName();
+                    localHostname = Dns.GetHostName();                    
                 }
                 catch (Exception)
                 {

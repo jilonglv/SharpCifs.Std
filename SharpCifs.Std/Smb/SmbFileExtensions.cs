@@ -43,8 +43,6 @@ namespace SharpCifs.Smb
             return TimeZoneInfo.ConvertTime(Extensions.CreateDateFromUTC(smbFile.LastModified()),
                                             TimeZoneInfo.Local);
         }
-
-
         /// <summary>
         /// List files async
         /// </summary>
@@ -52,7 +50,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task<SmbFile[]> ListFilesAsync(this SmbFile smbFile)
         {
-            return Task.Run(() => smbFile.ListFiles());
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.ListFiles());
         }
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task<SmbFile[]> ListFilesAsync(this SmbFile smbFile, string wildcard)
         {
-            return Task.Run(() => smbFile.ListFiles(wildcard));
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.ListFiles(wildcard));
         }
 
         /// <summary>
@@ -73,7 +71,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task<string[]> ListAsync(this SmbFile smbFile)
         {
-            return Task.Run(() => smbFile.List());
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.List());
         }
 
         /// <summary>
@@ -83,7 +81,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task MkDirAsync(this SmbFile smbFile)
         {
-            return Task.Run(() => smbFile.Mkdir());
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.Mkdir());
         }
 
 
@@ -94,7 +92,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task DeleteAsync(this SmbFile smbFile)
         {
-            return Task.Run(() => smbFile.Delete());
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.Delete());
         }
 
         /// <summary>
@@ -105,7 +103,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task RenameToAsync(this SmbFile smbFile, SmbFile destination)
         {
-            return Task.Run(() => smbFile.RenameTo(destination));
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.RenameTo(destination));
         }
 
         /// <summary>
@@ -115,7 +113,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task<InputStream> GetInputStreamAsync(this SmbFile smbFile)
         {
-            return Task.Run(() => smbFile.GetInputStream());
+            return SharpCifs.Std.TaskEx.TaskRun(() => smbFile.GetInputStream());
         }
 
 
@@ -127,7 +125,7 @@ namespace SharpCifs.Smb
         /// <returns></returns>
         public static Task<OutputStream> GetOutputStreamAsync(this SmbFile smbFile, bool append = false)
         {
-            return Task.Run(() => new SmbFileOutputStream(smbFile, append) as OutputStream);
+            return SharpCifs.Std.TaskEx.TaskRun(() => new SmbFileOutputStream(smbFile, append) as OutputStream);
         }
     }
 }

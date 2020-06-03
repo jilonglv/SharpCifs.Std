@@ -2,6 +2,7 @@ using SharpCifs.Util.DbsHelper;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SharpCifs.Util.Sharpen
 {
@@ -16,12 +17,19 @@ namespace SharpCifs.Util.Sharpen
         {
             if (Thread.WrapperThread == null)
             {
-                Thread.WrapperThread = new Thread(System.Environment.CurrentManagedThreadId);
+                Thread.WrapperThread = new Thread(GetCurrentThreadId());
             }
 
             return Thread.WrapperThread;
         }
-
+        public static int GetCurrentThreadId()
+        {
+#if NET40
+            return System.Threading.Thread.CurrentThread.ManagedThreadId;
+#else
+            return System.Environment.CurrentManagedThreadId;
+#endif
+        }
 
         public CancellationTokenSource Canceller => this._canceller;
 
@@ -93,7 +101,7 @@ namespace SharpCifs.Util.Sharpen
             this._tgroup = DefaultGroup;
             this._tgroup.Add(this);
         }
-        
+
 
         public string GetName()
         {
@@ -156,7 +164,7 @@ namespace SharpCifs.Util.Sharpen
 
         public void Join(long timeout)
         {
-            this._task?.Wait((int) timeout);
+            this._task?.Wait((int)timeout);
         }
 
 
@@ -175,56 +183,50 @@ namespace SharpCifs.Util.Sharpen
         {
             this._name = name;
         }
-
-
-        public static void Sleep(long milis)
-        {
-            System.Threading.Tasks.Task.Delay((int) milis).Wait();
-        }
-
-
         public void Start(bool isSynced = false)
         {
             if (this._isRunning)
                 throw new InvalidOperationException("Thread Already started.");
 
             this._canceller = new CancellationTokenSource();
-            
-            this._task = System.Threading.Tasks.Task.Run(() =>
-            {
-                Thread.WrapperThread = this;
-                this._id = System.Environment.CurrentManagedThreadId;
+
+            this._task = SharpCifs.Std.TaskEx.TaskRun(() =>
+             {
+                 Thread.WrapperThread = this;
+                 this._id = GetCurrentThreadId();
 
                 //Log.Out("Thread.Start - Task Start");
                 this._isRunning = true;
-                
-                try
-                {
-                    this._runnable.Run();
+
+                 try
+                 {
+                     this._runnable.Run();
                     //Log.Out("Thread.Start - Task Normaly End");
                 }
-                catch (Exception exception)
-                {
-                    //Log.Out("Thread.Start - Task Error End");
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    this._isRunning = false;
+                 catch (Exception exception)
+                 {
+                    Log.Out("Thread.Start - Task Error End:"+exception.ToString());
+                    //Console.WriteLine(exception);
+                 }
+                 finally
+                 {
+                     this._isRunning = false;
 
-                    this._tgroup?.Remove(this);
+                     this._tgroup?.Remove(this);
 
-                    this._canceller?.Dispose();
-                    this._canceller = null;
+                     this._canceller?.Dispose();
+                     this._canceller = null;
 
                     //Log.Out("Thread.Start - Task Close Completed");
                 }
-            }, this._canceller.Token);
+             }, this._canceller.Token);
 
             //同期的に実行するとき、動作中フラグONまで待つ。
             if (isSynced)
+            {
                 while (!this._isRunning)
-                    System.Threading.Tasks.Task.Delay(300).GetAwaiter().GetResult();
+                    Std.TaskEx.Delay(300).Wait();
+            }
         }
 
 
@@ -237,8 +239,10 @@ namespace SharpCifs.Util.Sharpen
 
             //同期的に実行するとき、動作中フラグOFFまで待つ。
             if (isSynced)
+            {
                 while (this._isRunning)
-                    System.Threading.Tasks.Task.Delay(300).GetAwaiter().GetResult();
+                    Std.TaskEx.Delay(300).Wait();
+            }
         }
 
 

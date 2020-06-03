@@ -28,7 +28,7 @@ namespace SharpCifs.Util.DbsHelper
 
             var msg = DateTime.Now.ToString("HH:mm:ss.fff") 
                       + ": [ThID: "
-                      + System.Environment.CurrentManagedThreadId.ToString().PadLeft(3)
+                      + SharpCifs.Util.Sharpen.Thread.GetCurrentThreadId().ToString().PadLeft(3)
                       + " "
                       + message;
 

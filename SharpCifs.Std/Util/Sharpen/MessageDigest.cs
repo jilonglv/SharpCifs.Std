@@ -1,3 +1,4 @@
+using SharpCifs.Util.DbsHelper;
 using System;
 using System.IO;
 using System.Reflection;
@@ -43,7 +44,7 @@ namespace SharpCifs.Util.Sharpen
     }
 
 
-    public class MessageDigest<TAlgorithm> 
+    public class MessageDigest<TAlgorithm>
         : MessageDigest where TAlgorithm : HashAlgorithm //, new() //use static `Create` method
     {
         private TAlgorithm _hash;
@@ -87,9 +88,12 @@ namespace SharpCifs.Util.Sharpen
         {
             //use static `Create` method
             //_hash = Activator.CreateInstance<TAlgorithm> ();
+#if NET40
+            _hash = Activator.CreateInstance<TAlgorithm>();
+#else
             var createMethod = typeof(TAlgorithm).GetRuntimeMethod("Create", new Type[0]);
             _hash = (TAlgorithm)createMethod.Invoke(null, new object[] { });
-
+#endif
             //HashAlgorithm cannot cast `ICryptoTransform` on .NET Core, gave up using CryptoStream. 
             //_stream = new CryptoStream(Stream.Null, _hash, CryptoStreamMode.Write);
             //_stream = new CryptoStream(_tmpStream, (ICryptoTransform)_hash, CryptoStreamMode.Write);
@@ -114,8 +118,8 @@ namespace SharpCifs.Util.Sharpen
 
         public override void Update(byte[] input, int index, int count)
         {
-            if (count < 0)
-                Console.WriteLine("Argh!");
+            //if (count < 0)
+            //    Log.Out("Argh!");
             _stream.Write(input, index, count);
         }
     }

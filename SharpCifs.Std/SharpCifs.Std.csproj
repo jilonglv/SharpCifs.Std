@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
+
+    <Description>
+      A simple .NET CIFS library written entirely in C#, with no external dependencies
+      forked from ume05rw/SharpCifs.Std
+      netstandard1.6+;net40+;
+    </Description>
+    <Copyright>jilonglv 2020</Copyright>
+    <VersionPrefix>0.2.3</VersionPrefix>
+    <Authors>jilonglv</Authors>
+    <AssemblyTitle>SharpCifs.Core</AssemblyTitle>
+    <AssemblyName>SharpCifs.Core</AssemblyName>
+    <PackageId>SharpCifs.Core</PackageId>
+    <PackageTags>cifs;smb;core;</PackageTags>
+    <PackageProjectUrl>https://github.com/jilonglv/SharpCifs.Std</PackageProjectUrl>
+  </PropertyGroup>
+
+  <!--<PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <DefineConstants>TRACE;NET40</DefineConstants>
+  </PropertyGroup>-->
+
+  <!--<PropertyGroup Condition="'$(Configuration)'=='Debug'">-->
+  <PropertyGroup >
+    <NoWarn>1701;1702;0168;0114;0649;0169;0108;0659</NoWarn>
+  </PropertyGroup>
+</Project>

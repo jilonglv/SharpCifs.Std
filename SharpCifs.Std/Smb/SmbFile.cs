@@ -3689,7 +3689,6 @@ namespace SharpCifs.Smb
             if (resolveSids)
             {
                 Sid[] sids = new Sid[aces.Length];
-                string[] names = null;
                 for (ai = 0; ai < aces.Length; ai++)
                 {
                     sids[ai] = aces[ai].Sid;

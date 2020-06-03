@@ -336,8 +336,7 @@ namespace SharpCifs.Netbios
                     {
                         if (_thread.IsCanceled)
                             break;
-
-                        Task.Delay(300).GetAwaiter().GetResult();
+                        Std.TaskEx.Delay(300).Wait();
                     }
 
                     sockEvArg?.Dispose();
